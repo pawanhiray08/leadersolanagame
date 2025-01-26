@@ -1,16 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useReown } from '@reownkit/appkit';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { connect, isConnected } = useReown();
+  const { connected } = useWallet();
 
-  const handleGetStarted = async () => {
-    if (!isConnected) {
-      await connect();
+  const handleGetStarted = () => {
+    if (connected) {
+      navigate('/game');
     }
-    navigate('/game');
   };
 
   return (
@@ -25,12 +25,16 @@ const Home = () => {
       </p>
       
       <div className="flex gap-6">
-        <button
-          onClick={handleGetStarted}
-          className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-lg font-semibold transition-all"
-        >
-          Start Playing
-        </button>
+        {connected ? (
+          <button
+            onClick={handleGetStarted}
+            className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-lg font-semibold transition-all"
+          >
+            Start Playing
+          </button>
+        ) : (
+          <WalletMultiButton className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-lg font-semibold transition-all" />
+        )}
         
         <button
           onClick={() => navigate('/marketplace')}
