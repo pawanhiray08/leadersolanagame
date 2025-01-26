@@ -1,19 +1,15 @@
 import React from 'react';
-import { useReown } from '@reownkit/appkit';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Dashboard = () => {
-  const { isConnected, connect, address } = useReown();
+  const { connected } = useWallet();
 
-  if (!isConnected) {
+  if (!connected) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Connect to View Your Dashboard</h2>
-        <button
-          onClick={connect}
-          className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-full"
-        >
-          Connect Wallet
-        </button>
+        <WalletMultiButton />
       </div>
     );
   }
