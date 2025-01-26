@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useReown } from '@reownkit/appkit';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Game = () => {
-  const { isConnected, connect } = useReown();
+  const { connected } = useWallet();
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState('waiting'); // waiting, playing, ended
   const [position, setPosition] = useState({ x: 50, y: 50 });
   const [targets, setTargets] = useState([]);
 
-  if (!isConnected) {
+  if (!connected) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Connect to Play</h2>
-        <button
-          onClick={connect}
-          className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-lg font-semibold"
-        >
-          Connect Wallet
-        </button>
+        <WalletMultiButton />
       </div>
     );
   }

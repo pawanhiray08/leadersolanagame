@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import { useReown } from '@reownkit/appkit';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Marketplace = () => {
-  const { isConnected, connect } = useReown();
+  const { connected } = useWallet();
   const [activeTab, setActiveTab] = useState('browse');
 
-  if (!isConnected) {
+  if (!connected) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Connect to Access Marketplace</h2>
-        <button
-          onClick={connect}
-          className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-full"
-        >
-          Connect Wallet
-        </button>
+        <WalletMultiButton />
       </div>
     );
   }
