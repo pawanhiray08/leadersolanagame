@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ReownProvider } from '@reownkit/appkit';
+import { WalletContextProvider } from './config/reown';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Game from './pages/Game';
@@ -8,12 +8,12 @@ import Marketplace from './pages/Marketplace';
 import Dashboard from './pages/Dashboard';
 import Leaderboard from './pages/Leaderboard';
 
+// Import wallet styles
+import '@solana/wallet-adapter-react-ui/styles.css';
+
 function App() {
   return (
-    <ReownProvider
-      apiKey={process.env.REACT_APP_REOWN_API_KEY}
-      network="mainnet-beta"
-    >
+    <WalletContextProvider>
       <Router>
         <div className="min-h-screen bg-gray-900 text-white">
           <Navbar />
@@ -28,7 +28,7 @@ function App() {
           </div>
         </div>
       </Router>
-    </ReownProvider>
+    </WalletContextProvider>
   );
 }
 
