@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useReown } from '@reownkit/appkit';
 
 const Game = () => {
-  const { connected } = useWallet();
+  const { isConnected, connect } = useReown();
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState('waiting'); // waiting, playing, ended
   const [position, setPosition] = useState({ x: 50, y: 50 });
   const [targets, setTargets] = useState([]);
 
-  if (!connected) {
+  if (!isConnected) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Connect to Play</h2>
-        <WalletMultiButton />
+        <button
+          onClick={connect}
+          className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-lg font-semibold"
+        >
+          Connect Wallet
+        </button>
       </div>
     );
   }
@@ -45,9 +49,9 @@ const Game = () => {
 
   const generateTarget = () => {
     const newTarget = {
-      x: Math.random() * 80 + 10,
-      y: Math.random() * 80 + 10,
-      id: Date.now()
+      id: Math.random(),
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5
     };
     setTargets(prev => [...prev, newTarget]);
   };
@@ -72,7 +76,7 @@ const Game = () => {
         <div className="space-y-8">
           <div className="text-2xl font-bold">Score: {score}</div>
           <div
-            className="relative bg-gray-900 w-[600px] h-[400px] rounded-lg overflow-hidden"
+            className="relative bg-gray-900 w-[600px] h-[400px] rounded-lg overflow-hidden mx-auto"
             style={{ border: '2px solid rgb(139, 92, 246)' }}
           >
             {targets.map((target) => (

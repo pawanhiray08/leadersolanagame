@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useReown } from '@reownkit/appkit';
 
 const Navbar = () => {
-  const { connected, publicKey } = useWallet();
+  const { connect, disconnect, isConnected, address } = useReown();
 
   return (
     <nav className="bg-gray-800 py-4">
@@ -17,15 +16,25 @@ const Navbar = () => {
           <Link to="/dashboard" className="hover:text-purple-400">Dashboard</Link>
           <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
           
-          {connected ? (
+          {isConnected ? (
             <div className="flex items-center space-x-4">
               <span className="text-sm bg-purple-700 px-4 py-2 rounded-full">
-                {publicKey.toString().slice(0, 6)}...{publicKey.toString().slice(-4)}
+                {address.slice(0, 6)}...{address.slice(-4)}
               </span>
-              <WalletMultiButton />
+              <button
+                onClick={disconnect}
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm"
+              >
+                Disconnect
+              </button>
             </div>
           ) : (
-            <WalletMultiButton />
+            <button
+              onClick={connect}
+              className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full text-sm"
+            >
+              Connect Wallet
+            </button>
           )}
         </div>
       </div>
